@@ -1,4 +1,4 @@
-import Logger from "./Logger.ts";
+import { logSuccess } from "./Logger.ts";
 
 type SupportedPlatform = 'win32' | 'linux' | 'darwin';
 
@@ -41,5 +41,5 @@ export default async function copyToClipboard(
     throw new Error(`Failed to copy password to clipboard:' ${decodeOutput(stderr)}`);
   }
 
-  Logger.instance().success('Password copied to clipboard');
+  logSuccess('Password copied to clipboard');
 }
