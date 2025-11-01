@@ -1,6 +1,9 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "dev": "deno run --watch main.ts",
+    "compile": "deno compile --allow-run --output pg main.ts",
+    "install": "deno install --allow-run --global --name pg main.ts",
+    "build": "deno compile --allow-run --output password-gen main.ts"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1"
