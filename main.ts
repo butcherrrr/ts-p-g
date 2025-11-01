@@ -3,8 +3,6 @@ import validateInput from './src/validation.ts';
 import generatePassword from "./src/password-generator.ts";
 import copyToClipboard from "./src/clipoard.ts";
 
-
-
 async function main(): Promise<void> {
   try {
     const { passwordLength, error, message } = validateInput(Deno.args);
