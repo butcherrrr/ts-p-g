@@ -2,11 +2,7 @@ import Logger from "./Logger.ts";
 
 type SupportedPlatform = 'win32' | 'linux' | 'darwin';
 
-type PlatformMap = {
-  [key in SupportedPlatform]: string;
-};
-
-function decodeOutput(output: Uint8Array): string {
+function decodeOutput(output: Uint8Array) {
   return new TextDecoder().decode(output).trim();
 }
 
@@ -14,11 +10,11 @@ export default async function copyToClipboard(
   password: string,
   platform: SupportedPlatform = Deno.build.os as SupportedPlatform
 ): Promise<void> {
-  const platformMap: PlatformMap = {
+  const platformMap = {
     win32: 'clip',
     linux: 'xclip',
     darwin: 'pbcopy',
-  } as const;
+  } as const satisfies Record<SupportedPlatform, string>;
 
   const command = platformMap[platform];
 
@@ -26,7 +22,7 @@ export default async function copyToClipboard(
     throw new Error('Unsupported platform for copying to clipboard');
   }
 
-  const escapedPassword: string = password.replace(/(\$|")/g, '\\$&').replace(/%/g, '%%');
+  const escapedPassword = password.replace(/(\$|")/g, '\\$&').replace(/%/g, '%%');
 
   const process = new Deno.Command('sh', {
     args: ['-c', `printf "${escapedPassword}" | ${command}`],

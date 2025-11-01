@@ -8,10 +8,10 @@ const MAX_LENGTH = 20;
 const MIN_LENGTH = 6;
 const DEFAULT_LENGTH = 12;
 
-export default function validateInput(args: Array<string>): ValidationResult {
-  const requestedLength: number = args.length ? parseInt(args[0], 10) : DEFAULT_LENGTH;
+export default function validateInput(args: string[]): ValidationResult {
+  const requestedLength = args.length ? parseInt(args[0], 10) : DEFAULT_LENGTH;
 
-  if (Number.isNaN(Number(requestedLength))) {
+  if (Number.isNaN(requestedLength)) {
     return {
       error: true,
       message: 'Usage: np <password-length> # Arg must be a number, leave blank for default of 12',

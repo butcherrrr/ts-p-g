@@ -1,5 +1,5 @@
 import Logger from "./src/Logger.ts";
-import validateInput, { ValidationResult } from './src/validation.ts';
+import validateInput from './src/validation.ts';
 import generatePassword from "./src/password-generator.ts";
 import copyToClipboard from "./src/clipoard.ts";
 
@@ -7,13 +7,13 @@ Logger.init();
 
 async function main(): Promise<void> {
   try {
-    const { passwordLength, error, message }: ValidationResult = validateInput(Deno.args);
+    const { passwordLength, error, message } = validateInput(Deno.args);
 
     if (error) {
      throw new Error(message);
     }
 
-    const password: string = generatePassword(passwordLength);
+    const password = generatePassword(passwordLength);
 
     Logger.instance().password(password)
 

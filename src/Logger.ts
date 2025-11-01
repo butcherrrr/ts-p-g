@@ -1,15 +1,9 @@
-type Writer = typeof Deno.stdout;
 type LogLevel = 'info' | 'error' | 'success' | 'password';
 
 export default class Logger {
-  private outputStream: Writer;
   private static logger: Logger;
 
-  static init(output: Writer = Deno.stdout): void {
-    if (!this.logger) {
-      this.logger = new Logger(output);
-    }
-
+  static init(output = Deno.stdout): void {
     this.logger = new Logger(output);
   }
 
@@ -21,26 +15,24 @@ export default class Logger {
     return this.logger;
   }
 
-  constructor(output: Writer) {
-    this.outputStream = output;
-  }
+  constructor(private outputStream: typeof Deno.stdout) {}
 
-  encode(message: string): Uint8Array {
+  private encode(message: string) {
     return new TextEncoder().encode(message);
   }
 
-  format(message: string, level: LogLevel): string {
-    const formattedMessage = {
+  private format(message: string, level: LogLevel) {
+    const formatMap = {
       info: message,
       error: `\x1b[31m\u2718 Error: ${message}\n`,
       success: `\x1b[32m\u2714 ${message}`,
       password: `\x1b[34mPassword:\n\n${message}\n`,
-    }[level]
+    } satisfies Record<LogLevel, string>;
 
-    return `${formattedMessage}\n`;
+    return `${formatMap[level]}\n`;
   }
 
-  write(message: string, type: LogLevel): void {
+  private write(message: string, type: LogLevel): void {
     const formattedMessage = this.format(message, type);
     const encodedMessage = this.encode(formattedMessage);
     this.outputStream.write(encodedMessage);
